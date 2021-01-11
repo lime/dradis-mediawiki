@@ -56,9 +56,14 @@ module Dradis::Plugins::Mediawiki::Filters
       fields = Dradis::Plugins::Mediawiki::Engine::settings.fields
 
       dradis_fields = wikitext
-      fields = fields.split(',')
-      fields.each do |f|
-        dradis_fields.sub!( /=+#{f}=+/, "#[#{f}]#" )
+
+      if fields == 'all'
+        dradis_fields.gsub!( /^=+(.+?)=+$/, '#[\1]#' )
+      else
+        fields = fields.split(',')
+        fields.each do |f|
+          dradis_fields.sub!( /=+#{f}=+/, "#[#{f}]#" )
+        end
       end
       return dradis_fields
     end
